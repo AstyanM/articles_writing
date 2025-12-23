@@ -1,6 +1,7 @@
 from src.analysis import ContentAnalyzer
 from src.scraper import FirecrawlClient
 from src.search import SerperClient
+from src.writer import ContentWriter
 import sys
 import os
 import json
@@ -57,6 +58,29 @@ def main():
     with open("analysis_result.md", "w", encoding="utf-8") as f:
         f.write(analysis_result)
     print("\nResult saved to analysis_result.md")
+
+    # 4. Drafting & SEO
+    print("\n--- STEP 4 & 5: Drafting and SEO Optimization ---")
+    writer = ContentWriter()
+
+    print("Drafting article...")
+    # Plan is likely embedded in synthesis for now
+    draft = writer.draft_article(plan="", synthesis=analysis_result)
+
+    print("Optimizing SEO...")
+    final_article = writer.optimize_seo(
+        draft,
+        keywords=["concours geipi", "dates 2025",
+                  "réussir concours ingénieur"],
+        external_links=urls_to_scrape
+    )
+
+    print("\n=== FINAL ARTICLE ===")
+    print(final_article[:500] + "...")
+
+    with open("final_article.md", "w", encoding="utf-8") as f:
+        f.write(final_article)
+    print("\nFinal article saved to final_article.md")
 
 
 if __name__ == "__main__":
